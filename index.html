@@ -18,8 +18,40 @@
 		}
 
 		#instructions {
-			width: 100%;
+			width: 52%;
 			height: 100%;
+			padding-left: 90px;
+			padding-right: 90px;
+
+			display: -webkit-box;
+			display: -moz-box;
+			display: box;
+
+			-webkit-box-orient: horizontal;
+			-moz-box-orient: horizontal;
+			box-orient: horizontal;
+
+			-webkit-box-pack: center;
+			-moz-box-pack: center;
+			box-pack: center;
+
+			-webkit-box-align: center;
+			-moz-box-align: center;
+			box-align: center;
+
+			color: #eee;
+			text-align: center;
+			font-family: 'KoHo', sans-serif;
+			font-size: 16px;
+			line-height: 24px;
+
+			cursor: pointer;
+		}
+
+
+		#myP {
+			width: 47%;
+			height: auto;
 
 			display: -webkit-box;
 			display: -moz-box;
@@ -43,7 +75,15 @@
 			font-size: 16px;
 			line-height: 28px;
 
+
 			cursor: pointer;
+			padding-left: 10%;
+
+
+			font-size: 36px;
+			color: #ffff;
+
+
 		}
 	</style>
 </head>
@@ -52,13 +92,32 @@
 	<div id="blocker">
 
 		<div id="instructions">
-			<span style="font-size:48px">Social Distance Shelter</span><br><br>
-			<span style="font-size:28px">Click anywhere to entry</span>
-			<br /><br />
-			Move: WASD<br />
-			Jump: SPACE<br />
-			Look: MOUSE
+			<strong> <span style="font-size:48px; color: #fff;">Social Distance Shelter</span></strong><br><br>
+			<strong> <span style="font-size:30px">Yixin Cao</span></strong><br><br>
+			<span style="font-size:18px; align: left;">
+				<br />
+				My inspiration originates from the fact that the epidemic is a contagious disease that requires people to keep a social distance. This motivates me to create a virtual space as the scenery of spiritual healing for security purposes. It is
+				also the revelation of the reality of environmental degradation. I constructed a shelter to keep individuals in a comfortable and safe environment, reducing their exposure to dangerous outside conditions. </span>
+
+			<div id="myP">
+				<strong> <span style="font-size:38px; line-height: 28px;"><a href="http://www.yixin-cao.com/lowtech/lowtech.html/">View in Low Tech</a></span></strong>
+				<br>
+				<span style="font-size:18px; color: #eee;align: left;">
+					<br />
+					The aim is to reduce energy usage by using minimal web design. To reduce energy consumption substantially below that of a typical website, use default fonts and static graphics. </span>
+				<br><br>
+
+				<span style="font-size:28px; background-color: #fff; color: black; opacity: 0.5;">Click anywhere to entry</span>
+				<span style="font-size:22px; color: #eee;  ">
+					<br /><br />
+					Move: WASD<br /><br />
+					Jump: SPACE<br /><br />
+					Look: MOUSE<br /></span>
+
+
+			</div>
 		</div>
+
 
 	</div>
 
@@ -77,8 +136,16 @@
 		import {
 			GLTFLoader
 		} from './public/src/GLTFLoader.js';
+		import {
+			GUI
+		} from './public/src/dat.gui.module.js';
 
+
+		import {
+			Water
+		} from './public/src/Water.js';
 		let camera, scene, renderer, controls;
+		let water, mesh, container, stats;
 
 		const objects = [];
 
@@ -106,7 +173,7 @@
 
 			scene = new THREE.Scene();
 			scene.background = new THREE.Color("rgb(201, 94, 159)");
-			scene.fog = new THREE.Fog("rgb(88, 0, 66)", 100, 30);
+			scene.fog = new THREE.Fog("rgb(221, 134, 179)", 30, 270);
 
 			const light = new THREE.HemisphereLight(0xeeeeff, 0x777788, 0.75);
 			light.position.set(0.5, 1, 0.75);
@@ -205,49 +272,6 @@
 
 			raycaster = new THREE.Raycaster(new THREE.Vector3(), new THREE.Vector3(0, -1, 0), 0, 10);
 
-			// floor
-
-			let floorGeometry = new THREE.PlaneGeometry(2000, 1700, 1000, 100);
-			floorGeometry.rotateX(-Math.PI / 2);
-
-			// vertex displacement
-
-			let position = floorGeometry.attributes.position;
-
-			for (let i = 0, l = position.count; i < l; i++) {
-
-				vertex.fromBufferAttribute(position, i);
-
-				vertex.x += Math.random() * 20 - 10;
-				vertex.y += Math.random() * 1;
-				vertex.z += Math.random() * 20 - 10;
-
-				position.setXYZ(i, vertex.x, vertex.y, vertex.z);
-
-			}
-
-			floorGeometry = floorGeometry.toNonIndexed(); // ensure each face has unique vertices
-
-			position = floorGeometry.attributes.position;
-			const colorsFloor = [];
-
-			for (let i = 0, l = position.count; i < l; i++) {
-
-				color.setHSL(Math.random() * 44.3 + 20.5, 0.5, Math.random() * 0.05 + 0.04);
-				colorsFloor.push(color.r, color.g, color.b);
-
-			}
-
-			floorGeometry.setAttribute('color', new THREE.Float32BufferAttribute(colorsFloor, 4));
-
-			const floorMaterial = new THREE.MeshBasicMaterial({
-				vertexColors: true
-			});
-
-			const floor = new THREE.Mesh(floorGeometry, floorMaterial);
-			scene.add(floor);
-
-
 
 			//
 
@@ -274,6 +298,7 @@
 		}
 
 		function animate() {
+
 
 			requestAnimationFrame(animate);
 
@@ -336,7 +361,7 @@
 
 		const textureFlare = textureLoader.load('./assets/lensflare.png');
 
-		addLight(0.995, 0.2, 0.7, 6000, 8000, -4000);
+		addLight(0.995, 0.2, 0.7, 6000, 7000, -4000);
 
 		function addLight(h, s, l, x, y, z) {
 
@@ -347,7 +372,7 @@
 
 			const lensflare = new Lensflare();
 
-			lensflare.addElement(new LensflareElement(textureFlare, 600, 0, light.color));
+			lensflare.addElement(new LensflareElement(textureFlare, 500, 0, light.color));
 
 
 			light.add(lensflare);
@@ -368,7 +393,7 @@
 
 				const model = gltf.scene;
 
-				model.position.set(150, -3, 10);
+				model.position.set(150, -17, 10);
 				model.scale.set(1500, 1500, 1500);
 
 			});
@@ -413,17 +438,69 @@
 
 			});
 
-			loader.load(
-				'./assets/p.glb',
-				function(gltf) {
-					scene.add(gltf.scene);
+		loader.load(
+			'./assets/p.glb',
+			function(gltf) {
+				scene.add(gltf.scene);
 
-					const model = gltf.scene;
+				const model = gltf.scene;
 
-					model.position.set(-10, 0, 30);
-					model.scale.set(1500, 1500, 1500);
+				model.position.set(-10, 0, 30);
+				model.scale.set(1500, 1500, 1500);
 
-				});
+			});
+
+
+		loader.load(
+			'./assets/sphere.glb',
+			function(gltf) {
+				scene.add(gltf.scene);
+
+				const model = gltf.scene;
+
+				model.position.set(-10, 0, 30);
+				model.scale.set(2500, 2500, 2500);
+
+			});
+
+
+		// Water Floor
+
+		const waterGeometry = new THREE.PlaneGeometry(10000, 10000);
+
+		water = new Water(
+			waterGeometry, {
+				textureWidth: 1512,
+				textureHeight: 1512,
+				waterNormals: new THREE.TextureLoader().load('assets/water.jpg', function(texture) {
+
+					texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+
+				}),
+				sunDirection: new THREE.Vector3(),
+				sunColor: 0xffffff,
+				waterColor: 0x001e0f,
+				distortionScale: 3.7,
+				fog: scene.fog !== undefined
+			}
+		);
+
+		water.rotation.x = -Math.PI / 2;
+
+		scene.add(water);
+
+		// GUI
+
+		//	const gui = new GUI();
+
+
+
+		//	const waterUniforms = water.material.uniforms;
+
+		//	const folderWater = gui.addFolder('Ocean');
+		//	folderWater.add(waterUniforms.distortionScale, 'value', 0, 8, 0.1).name('distortionScale');
+		//	folderWater.add(waterUniforms.size, 'value', 0.2, 20, 0.1).name('size');
+		//	folderWater.open();
 	</script>
 </body>
 
