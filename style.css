@@ -1,3 +1,6 @@
+body {
+  background-color: rgb(254,251,242);
+}
 ul {
   list-style-type: none;
   margin: 0;
@@ -13,11 +16,26 @@ li a {
   display: block;
   padding: 18px;
   background-color: none;
+  color: #000;
 }
 
 .myH1 {
   text-align: center;
-  font-size: 4rem;
+  font-size: 3rem;
   font-weight: 620;
   line-height: 180px;
+}
+
+.myP {
+  text-align: left;
+  line-height: 1.7;
+  padding-left: 25%;
+  padding-right: 25%;
+  font-size: 16px;
+  font-family: "arial";
+}
+
+.gallery-img {
+  padding-left: 25%;
+  padding-right: 25%;
 }
