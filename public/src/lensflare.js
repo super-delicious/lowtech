@@ -15,7 +15,7 @@ import {
 	Vector2,
 	Vector3,
 	Vector4
-} from 'https://cdn.jsdelivr.net/npm/three@0.118/build/three.module.js';
+} from 'https://www.yixin-cao.com/lowtech/public/build/three.module.js';
 
 class Lensflare extends Mesh {
 
