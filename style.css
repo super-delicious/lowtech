@@ -29,13 +29,13 @@ li a {
 .myP {
   text-align: left;
   line-height: 1.7;
-  padding-left: 25%;
-  padding-right: 25%;
+  padding-left: 15%;
+  padding-right: 15%;
   font-size: 16px;
   font-family: "arial";
 }
 
 .gallery-img {
-  padding-left: 25%;
+  padding-left: 24%;
   padding-right: 25%;
 }
